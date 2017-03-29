@@ -1,0 +1,51 @@
+{
+	"liveValues": [
+		{
+			"range": {
+				"from": {
+					"line": 35,
+					"ch": 20
+				},
+				"to": {
+					"line": 35,
+					"ch": 23
+				}
+			},
+			"type": "number",
+			"name": "Height",
+			"max": 600,
+			"group": "MAP VIEW"
+		},
+		{
+			"range": {
+				"from": {
+					"line": 36,
+					"ch": 19
+				},
+				"to": {
+					"line": 36,
+					"ch": 22
+				}
+			},
+			"type": "number",
+			"name": "Width",
+			"max": 600,
+			"group": "MAP VIEW"
+		},
+		{
+			"range": {
+				"from": {
+					"line": 40,
+					"ch": 29
+				},
+				"to": {
+					"line": 40,
+					"ch": 33
+				}
+			},
+			"type": "boolean",
+			"name": "ShowUserLocation",
+			"group": "MAP VIEW"
+		}
+	]
+}

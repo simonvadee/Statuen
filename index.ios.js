@@ -5,7 +5,8 @@ import {
   View,
   Button,
   StyleSheet,
-} from 'react-native';
+  MapView,
+} from 'react-native'
 import { StackNavigator } from 'react-navigation';
 
 class HomeScreen extends React.Component {
@@ -30,6 +31,15 @@ class HomeScreen extends React.Component {
               onPress={() => navigate('Chat', { name: 'Superman'})}
               title="Chat with Superman"
             />
+        <MapView
+          style={{
+            height: 200,
+            width: 300,
+          }}
+          onRegionChange={() => {}}
+          onRegionChangeComplete={() => {}}
+          showsUserLocation={true}
+        />
       </View>
     );
   }
