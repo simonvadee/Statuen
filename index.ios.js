@@ -32,14 +32,11 @@ class HomeScreen extends React.Component {
               title="Chat with Superman"
             />
         <MapView
-          style={{
-            height: 200,
-            width: 300,
-          }}
+          style={styles.map}
           onRegionChange={() => {}}
           onRegionChangeComplete={() => {}}
-          showsUserLocation={true}
-        />
+          showsUserLocation={true} >
+        </MapView>
       </View>
     );
   }
@@ -86,6 +83,14 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+    map: {
+        height: 500,
+        top: 120,
+        bottom: 0,
+        right: 0,
+        left: 0,
+        position: 'absolute',
+    },
 });
 
 AppRegistry.registerComponent('TalkingStatuesApp', () => TalkingStatuesApp);
