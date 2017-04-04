@@ -19,20 +19,17 @@ export default class WelcomeModal extends Component{
     super(props);
     this.state = {
       text: '',
+      modalVisible: true
     };
   }
-  state = {
-    modalVisible: true,
-  }
-
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
   render() {
     console.log('Rendering Modal');
-    var viewportWidth = Dimensions.get('window').width; //full width
-    var viewportHeight = Dimensions.get('window').height; //full height
+    let viewportWidth = Dimensions.get('window').width; //full width
+    let viewportHeight = Dimensions.get('window').height; //full height
 
     return(
 
