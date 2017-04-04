@@ -95,7 +95,12 @@ class HomeScreen extends React.Component {
           coordinate={marker.latlng}
           title={marker.title}
           description={marker.description}
-          />
+          >
+          <MapView.Callout tooltip
+          onPress={() =>
+            {navigate('Chat', {})}
+          }/>
+          </MapView.Marker>
           ))}
         </MapView>
         </View>
