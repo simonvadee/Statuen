@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   AppRegistry,
   Text,
@@ -8,36 +8,51 @@ import {
   MapView,
 } from 'react-native'
 import { StackNavigator } from 'react-navigation';
+import { SideMenu, List, ListItem } from 'react-native-elements'
+import WelcomeModal from './components/WelcomeModal'
+// import menu from './menu';
+
+import styles from './style';
+
+
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Welcome',
   };
+
+
+
   render() {
+    console.log('We are ready to render Main page');
+
     const { navigate } = this.props.navigation;
     return (
-      <View>
-        <Button
-          onPress={() => navigate('Chat', { name: 'Cheerio'})}
-          title="Chat with Cheerio"
-        />
+        <View>
+          <WelcomeModal/>
 
           <Button
-            onPress={() => navigate('Chat', { name: 'StatueMaster'})}
-            title="Chat with StatueMaster"
+              onPress={() => navigate('Chat', { name: 'Cheerio'})}
+              title="Chat with Cheerio"
+
           />
 
-            <Button
+          <Button
+              onPress={() => navigate('Chat', { name: 'StatueMaster'})}
+              title="Chat with StatueMaster"
+          />
+
+          <Button
               onPress={() => navigate('Chat', { name: 'Superman'})}
               title="Chat with Superman"
-            />
-        <MapView
-          style={styles.map}
-          onRegionChange={() => {}}
-          onRegionChangeComplete={() => {}}
-          showsUserLocation={true} >
-        </MapView>
-      </View>
+          />
+          <MapView
+              style={styles.map}
+              onRegionChange={() => {}}
+              onRegionChangeComplete={() => {}}
+              showsUserLocation={true} >
+          </MapView>
+        </View>
     );
   }
 }
@@ -53,9 +68,9 @@ class ChatScreen extends React.Component {
     // The screen's current route is passed in to `props.navigation.state`:
     const { params } = this.props.navigation.state;
     return (
-      <View>
-        <Text>Hello, the title comes from params from homepage</Text>
-      </View>
+        <View>
+          <Text>Hello, the title comes from params from homepage</Text>
+        </View>
     );
   }
 }
@@ -66,31 +81,6 @@ const TalkingStatuesApp = StackNavigator({
 });
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-    map: {
-        height: 500,
-        top: 120,
-        bottom: 0,
-        right: 0,
-        left: 0,
-        position: 'absolute',
-    },
-});
 
 AppRegistry.registerComponent('TalkingStatuesApp', () => TalkingStatuesApp);
+

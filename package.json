@@ -9,8 +9,10 @@
   "dependencies": {
     "react": "~15.4.1",
     "react-native": "0.42.3",
-    "react-navigation": "^1.0.0-beta.7",
-    "react-native-maps": "latest"
+    "react-native-elements": "^0.10.3",
+    "react-native-maps": "latest",
+    "react-native-vector-icons": "^4.0.0",
+    "react-navigation": "^1.0.0-beta.7"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",
