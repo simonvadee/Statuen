@@ -70,7 +70,7 @@ import React, {Component} from 'react';
 import {
   View,
 } from 'react-native'
-import { SideMenu, List, ListItem } from 'react-native-elements'
+//import { SideMenu, List, ListItem } from 'react-native-elements'
 
 export default class Menu extends Component{
 

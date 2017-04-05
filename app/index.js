@@ -10,7 +10,7 @@ import MapView from 'react-native-maps';
 
 import { StackNavigator } from 'react-navigation';
 import WelcomeModal from './components/WelcomeModal'
-import Menu from './components/Menu';
+//import Menu from './components/Menu';
 
 import styles from './style';
 
@@ -67,7 +67,6 @@ class HomeScreen extends React.Component {
     return (
         <View>
           <WelcomeModal/>
-          <Menu/>
           <Button
               onPress={() => navigate('Chat', { name: 'Cheerio'})}
               title="Chat with Cheerio"
