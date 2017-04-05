@@ -6,11 +6,14 @@ import {
   Button,
   StyleSheet,
 } from 'react-native'
+
 import MapView from 'react-native-maps';
 
 import { StackNavigator } from 'react-navigation';
+
 import WelcomeModal from './components/WelcomeModal'
-//import Menu from './components/Menu';
+import Menu from './components/Menu';
+import ChatScreen from './components/Chat';
 
 import styles from './style';
 
@@ -68,17 +71,6 @@ class HomeScreen extends React.Component {
         <View>
           <WelcomeModal/>
           <Button
-              onPress={() => navigate('Chat', { name: 'Cheerio'})}
-              title="Chat with Cheerio"
-
-          />
-
-          <Button
-              onPress={() => navigate('Chat', { name: 'StatueMaster'})}
-              title="Chat with StatueMaster"
-          />
-
-          <Button
               onPress={() => navigate('Chat', { name: 'Superman'})}
               title="Chat with Superman"
           />
@@ -115,22 +107,6 @@ class HomeScreen extends React.Component {
 }
 
 
-// Class name is name used for StackNavigator navigation
-class ChatScreen extends React.Component {
-  static navigationOptions = {
-    // Nav options can be defined as a function of the navigation prop:
-    title: ({ state }) => `${state.params.name}`,
-  };
-  render() {
-    // The screen's current route is passed in to `props.navigation.state`:
-    const { params } = this.props.navigation.state;
-    return (
-        <View>
-          <Text>Hello, the title comes from params from homepage</Text>
-        </View>
-    );
-  }
-}
 // Remember to add new screens here, match name with class.
 const TalkingStatuesApp = StackNavigator({
   Home: { screen: HomeScreen },
