@@ -43,6 +43,7 @@ export default class ChatScreen extends Component {
 		this.state = {messages: []};
 		this.onSend = this.onSend.bind(this);
 	}
+	
 	render() {
 	    // The screen's current route is passed in to `props.navigation.state`:
 	    const { params } = this.props.navigation.state;
