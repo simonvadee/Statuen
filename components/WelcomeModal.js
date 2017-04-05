@@ -11,9 +11,6 @@ import {
 
 } from 'react-native'
 import styles from '../style';
-
-
-
 export default class WelcomeModal extends Component{
   constructor(props) {
     super(props);
