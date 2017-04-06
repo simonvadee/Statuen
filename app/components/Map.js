@@ -80,7 +80,7 @@ export default class Map extends Component {
                   title={marker.title}
                   description={marker.description}
               >
-                <MapView.Callout tooltip
+                <MapView.Callout
                                  onPress={() =>
                                  {this.props.navigator('Chat', {name: marker.title})}
                                  }/>
