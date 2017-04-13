@@ -105,7 +105,16 @@ export default class Map extends Component {
         routeMapper={{
           LeftButton: (route, navigator, index, navState) =>
           { return (
-            <Icon.Button name="bars" size={30} padding={10} color="#000000" backgroundColor='rgba(0, 0, 0, 0.0)' onPress={this.trigger_menu} />); },
+            <Icon.Button
+            name="bars"
+            size={30}
+            padding={10}
+            color="#000000"
+            backgroundColor='rgba(0, 0, 0, 0.0)'
+            onPress={this.trigger_menu}
+            borderRadius={50}
+            />);
+        },
           RightButton: (route, navigator, index, navState) =>
           {},
           Title: (route, navigator, index, navState) =>
