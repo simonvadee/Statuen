@@ -22,11 +22,6 @@ var initialLayout = {
   width: Dimensions.get('window').width,
 };
 
-const app_routes = [
-{title: '', index: 0 },
-{title: '', index: 1 },
-];
-
 const styles = StyleSheet.create({
   initialLayout: {
     height: 0,

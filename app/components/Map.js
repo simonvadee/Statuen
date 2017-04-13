@@ -107,12 +107,13 @@ export default class Map extends Component {
           { return (
             <Icon.Button
             name="bars"
-            size={30}
-            padding={10}
+            size={25}
+            padding={15}
             color="#000000"
-            backgroundColor='rgba(0, 0, 0, 0.0)'
+            backgroundColor='rgba(31, 103, 158, 0.3)'
             onPress={this.trigger_menu}
-            borderRadius={50}
+            borderRadius={180}
+            iconStyle={{marginLeft: 5, marginRight: 5}}
             />);
         },
           RightButton: (route, navigator, index, navState) =>
