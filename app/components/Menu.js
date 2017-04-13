@@ -69,6 +69,7 @@
 import React, {Component} from 'react';
 import {
   View,
+  Navigator
 } from 'react-native'
 
 import { SideMenu, List, ListItem } from 'react-native-elements'

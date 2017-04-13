@@ -45,8 +45,6 @@ export default class ChatScreen extends Component {
 	}
 	
 	render() {
-	    // The screen's current route is passed in to `props.navigation.state`:
-	    const { params } = this.props.navigation.state;
 	    return (
 	    	<GiftedChat
 		        messages={this.state.messages}

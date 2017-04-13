@@ -5,47 +5,100 @@ import {
   View,
   Button,
   StyleSheet,
+  Navigator,
+  Dimensions
 } from 'react-native'
 
-import { StackNavigator } from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 
 import WelcomeModal from './components/WelcomeModal'
 import Menu from './components/Menu';
 import ChatScreen from './components/Chat';
 import Map from './components/Map'
 
-import styles from './style';
+var initialLayout = {
+  height: 0,
+  width: Dimensions.get('window').width,
+};
+
+const app_routes = [
+{title: '', index: 0 },
+{title: '', index: 1 },
+];
+
+const styles = StyleSheet.create({
+  initialLayout: {
+    height: 0,
+    width: Dimensions.get('window').width,
+  },
+  container: {
+    flex: 1,
+  },
+  tabbar: {
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    height: 40,
+    width: Dimensions.get('window').width
+  },
+});
 
 class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Welcome',
+  state = {
+    index: 0,
+    routes: [
+    { key: '1', title: 'HomeScreen', icon: 'map-marker'},
+    { key: '2', title: 'ChatScreen', icon: 'wechat'},
+    ],
+  };
+
+  _handleChangeTab = (index) => {
+    this.setState({ index });
+  };
+
+  _renderIcon = ({ route }: any) => {
+    return (
+      <Icon
+      name={route.icon}
+      size={24}
+      color='black'
+      />
+      );
+  };
+
+  _renderHeader = (props) => {
+    return (
+      <TabBar
+      {...props}
+      renderIcon={this._renderIcon}
+      style={styles.tabbar}
+      />);
+  };
+
+  _renderScene = ({ route }) => {
+    switch (route.key) {
+      case '1':
+      return ( <Map app_routes={app_routes}/> );
+      case '2':
+      return ( <ChatScreen/> );
+      default:
+      return null;
+    }
   };
 
   render() {
-    console.log('We are ready to render Main page');
-
-    const { navigate } = this.props.navigation;
     return (
-        <View>
-          <Button
-              onPress={() => navigate('Chat', { name: 'Superman'})}
-              title="Chat with Superman"
-          />
-          <Map 
-          navigator={navigate}
-          />
-        </View>
-    );
+      <TabViewAnimated
+      initialLayout={initialLayout}
+      style={styles.container}
+      navigationState={this.state}
+      renderScene={this._renderScene}
+      renderHeader={this._renderHeader}
+      onRequestChangeTab={this._handleChangeTab}
+      />
+      );
   }
 }
 
-// Remember to add new screens here, match name with class.
-const TalkingStatuesApp = StackNavigator({
-  Home: { screen: HomeScreen },
-  Chat: { screen: ChatScreen },
-});
 
-
-
-AppRegistry.registerComponent('TalkingStatuesApp', () => TalkingStatuesApp);
+AppRegistry.registerComponent('TalkingStatuesApp', () => HomeScreen);
 
