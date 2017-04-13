@@ -89,7 +89,7 @@ export default class Map extends Component {
         title={marker.title}
         description={marker.description}
         onPress={() =>
-         {this.props.navigator('Chat', {name: marker.title})}
+         {this.props.navigator(1)}
        }/>
        </MapView.Marker>
        ))}
@@ -100,8 +100,6 @@ export default class Map extends Component {
   render(){
   return(
       <Navigator
-      // initialRoute={this.props.app_routes[0]}
-      // initialRouteStack={this.props.app_routes}
       navigationBar={
         <Navigator.NavigationBar
         routeMapper={{

@@ -51,6 +51,10 @@ class HomeScreen extends React.Component {
     ],
   };
 
+  _goTo = (index) => {
+    this.setState({index})
+  };
+
   _handleChangeTab = (index) => {
     this.setState({ index });
   };
@@ -77,7 +81,7 @@ class HomeScreen extends React.Component {
   _renderScene = ({ route }) => {
     switch (route.key) {
       case '1':
-      return ( <Map app_routes={app_routes}/> );
+      return ( <Map navigator={this._goTo}/> );
       case '2':
       return ( <ChatScreen/> );
       default:
