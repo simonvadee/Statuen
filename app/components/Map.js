@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {
   View,
+  Text,
+  Image,
   StyleSheet,
   Dimensions,
   Navigator
@@ -11,6 +13,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import MapView from 'react-native-maps';
 import HomeScreen from '../index'
+
+import CustomCallout from './CustomCallout'
 
 styles = StyleSheet.create({
   map: {
@@ -86,11 +90,18 @@ export default class Map extends Component {
         description={marker.description}
         >
         <MapView.Callout
-        title={marker.title}
-        description={marker.description}
+        tooltip={true}
         onPress={() =>
          {this.props.navigator(1)}
-       }/>
+       }>
+       <CustomCallout>
+        <Image
+          style={{width: 50, height: 50}}
+          source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+        />
+       <Text>Test</Text>
+       </CustomCallout>
+       </MapView.Callout>
        </MapView.Marker>
        ))}
       </MapView>
@@ -103,19 +114,19 @@ export default class Map extends Component {
       navigationBar={
         <Navigator.NavigationBar
         routeMapper={{
-          LeftButton: (route, navigator, index, navState) =>
-          { return (
-            <Icon.Button
-            name="bars"
-            size={25}
-            padding={15}
-            color="#000000"
-            backgroundColor='rgba(31, 103, 158, 0.3)'
-            onPress={this.trigger_menu}
-            borderRadius={180}
-            iconStyle={{marginLeft: 5, marginRight: 5}}
-            />);
-        },
+          LeftButton: (route, navigator, index, navState) => {},
+        //   { return (
+        //     <Icon.Button
+        //     name="bars"
+        //     size={25}
+        //     padding={15}
+        //     color="#000000"
+        //     backgroundColor='rgba(31, 103, 158, 0.3)'
+        //     onPress={this.trigger_menu}
+        //     borderRadius={60}
+        //     iconStyle={{marginLeft: 5, marginRight: 5}}
+        //     />);
+        // },
           RightButton: (route, navigator, index, navState) =>
           {},
           Title: (route, navigator, index, navState) =>
