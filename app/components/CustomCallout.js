@@ -12,15 +12,15 @@ const propTypes = {
 export default class CustomCallout extends React.Component {
   render() {
     return (
-      <View style={[styles.container, this.props.style]}>
-        <View style={styles.bubble}>
-          <View style={styles.amount}>
-            {this.props.children}
+        <View style={[styles.container, this.props.style]}>
+          <View style={styles.bubble}>
+            <View style={styles.amount}>
+              {this.props.children}
+            </View>
           </View>
+          <View style={styles.arrowBorder} />
+          <View style={styles.arrow} />
         </View>
-        <View style={styles.arrowBorder} />
-        <View style={styles.arrow} />
-      </View>
     );
   }
 }
@@ -31,12 +31,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     alignSelf: 'flex-start',
+    alignItems: 'stretch',
+    minWidth: 160,
   },
   bubble: {
-    width: 140,
     flexDirection: 'row',
     alignSelf: 'flex-start',
-    backgroundColor: '#4da2ab',
+    backgroundColor: 'white',
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 6,
@@ -50,15 +51,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: 16,
     borderColor: 'transparent',
-    borderTopColor: '#4da2ab',
+    borderTopColor: 'transparent',
     alignSelf: 'center',
-    marginTop: -32,
+    marginTop: -60,
   },
   arrowBorder: {
     backgroundColor: 'transparent',
     borderWidth: 16,
     borderColor: 'transparent',
-    borderTopColor: '#007a87',
+    borderTopColor: 'grey',
     alignSelf: 'center',
     marginTop: -0.5,
   },

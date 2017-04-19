@@ -13,7 +13,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 
 import WelcomeModal from './components/WelcomeModal'
-import Menu from './components/Menu';
 import ChatScreen from './components/Chat';
 import Map from './components/Map'
 
