@@ -26,8 +26,8 @@ styles = StyleSheet.create({
 });
 
 // Map markers etc
-const LATITUDE_DELTA_DEFAULT = 0.1;
-const LONGITUDE_DELTA_DEFAULT = 0.1;
+const LATITUDE_DELTA_DEFAULT = 0.01;
+const LONGITUDE_DELTA_DEFAULT = 0.01;
 
 const statues_location = [
 {latlng: {
@@ -94,15 +94,15 @@ const statues_location = [
               this.watchID = navigator.geolocation.watchPosition((pos) => {
                 if (pos.coords.latitude && pos.coords.longitude) {
                   this.setState({
-                    region : new MapView.AnimatedRegion({
+                    region : {
                       latitude: pos.coords.latitude,
                       longitude: pos.coords.longitude,
                       latitudeDelta: LATITUDE_DELTA_DEFAULT,
                       longitudeDelta: LONGITUDE_DELTA_DEFAULT,
-                    })
+                    }
                   });
+                  console.log("PERSONAL COORD ----------- ", pos.coords)
                 }
-                console.log("PERSONAL COORD", pos.coords, 'STATE', this.state.region)
               });
             }
 
@@ -121,7 +121,7 @@ const statues_location = [
                 }}
                 onRegionChangeComplete={() => {}}
                 showsUserLocation={true}
-                followsUserLocation={true}
+                // followsUserLocation={true}
                 >
                 {this.state.markers.map((marker, index) => (
                   <MapView.Marker
