@@ -40,8 +40,8 @@ class HomeScreen extends React.Component {
   state = {
     index: 0,
     routes: [
-    { key: '1', title: 'HomeScreen', icon: 'map-marker'},
-    { key: '2', title: 'ChatScreen', icon: 'wechat'},
+      { key: '1', title: 'HomeScreen', icon: 'map-marker'},
+      { key: '2', title: 'ChatScreen', icon: 'wechat'},
     ],
   };
 
@@ -55,45 +55,45 @@ class HomeScreen extends React.Component {
 
   _renderIcon = ({ route }: any) => {
     return (
-      <Icon
-      name={route.icon}
-      size={24}
-      color='black'
-      />
-      );
+        <Icon
+            name={route.icon}
+            size={24}
+            color='black'
+        />
+    );
   };
 
   _renderHeader = (props) => {
     return (
-      <TabBar
-      {...props}
-      renderIcon={this._renderIcon}
-      style={styles.tabbar}
-      />);
+        <TabBar
+            {...props}
+            renderIcon={this._renderIcon}
+            style={styles.tabbar}
+        />);
   };
 
   _renderScene = ({ route }) => {
     switch (route.key) {
       case '1':
-      return ( <Map navigator={this._goTo}/> );
+        return ( <Map navigator={this._goTo}/> );
       case '2':
-      return ( <ChatScreen/> );
+        return ( <ChatScreen/> );
       default:
-      return null;
+        return null;
     }
   };
 
   render() {
     return (
-      <TabViewAnimated
-      initialLayout={initialLayout}
-      style={styles.container}
-      navigationState={this.state}
-      renderScene={this._renderScene}
-      renderHeader={this._renderHeader}
-      onRequestChangeTab={this._handleChangeTab}
-      />
-      );
+        <TabViewAnimated
+            initialLayout={initialLayout}
+            style={styles.container}
+            navigationState={this.state}
+            renderScene={this._renderScene}
+            renderHeader={this._renderHeader}
+            onRequestChangeTab={this._handleChangeTab}
+        />
+    );
   }
 }
 
