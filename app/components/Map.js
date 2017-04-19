@@ -33,8 +33,8 @@ styles = StyleSheet.create({
 });
 
 // Map markers etc
-const LATITUDE_DELTA_DEFAULT = 0.02;
-const LONGITUDE_DELTA_DEFAULT = 0.02;
+const LATITUDE_DELTA_DEFAULT = 0.1;
+const LONGITUDE_DELTA_DEFAULT = 0.1;
 
 const statues_location = [
   {latlng: {
@@ -71,84 +71,125 @@ const statues_location = [
 
 export default class Map extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {markers : statues_location};
-  }
+            watchID: ?number = null;
 
-  trigger_menu() {
-    console.log("triggering menu")
-  }
+            constructor(props) {
+              super(props);
+              this.state = {
+                markers : statues_location,
+                region: {
+                  latitude: 52.079875,
+                  longitude: 4.314736,
+                  latitudeDelta: LATITUDE_DELTA_DEFAULT,
+                  longitudeDelta: LONGITUDE_DELTA_DEFAULT,
+                }
+              };
+            }
 
-  render_map = (route, navigator) => {
-    return (
-        <MapView
-            region={{
-              latitude: 52.079875,
-              longitude: 4.315880,
-              latitudeDelta: LATITUDE_DELTA_DEFAULT,
-              longitudeDelta: LONGITUDE_DELTA_DEFAULT,
-            }}
-            style={styles.map}
-            onRegionChange={() => {}}
-            onRegionChangeComplete={() => {}}
-            showsUserLocation={true}
-        >
-          {this.state.markers.map((marker, index) => (
-              <MapView.Marker
+            componentDidMount() {
+              navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                  if (pos.coords.latitude && pos.coords.longitude) {
+                    this.setState({
+                      region : {
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude,
+                        latitudeDelta: LATITUDE_DELTA_DEFAULT,
+                        longitudeDelta: LONGITUDE_DELTA_DEFAULT,
+                      }
+                    });
+                  }
+                },
+                (error) => alert(JSON.stringify(error)),
+                {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+                );
+              this.watchID = navigator.geolocation.watchPosition((pos) => {
+                if (pos.coords.latitude && pos.coords.longitude) {
+                  this.setState({
+                    region : new MapView.AnimatedRegion({
+                      latitude: pos.coords.latitude,
+                      longitude: pos.coords.longitude,
+                      latitudeDelta: LATITUDE_DELTA_DEFAULT,
+                      longitudeDelta: LONGITUDE_DELTA_DEFAULT,
+                    })
+                  });
+                }
+                console.log("PERSONAL COORD", pos.coords, 'STATE', this.state.region)
+              });
+            }
+
+            trigger_menu() {
+              console.log("triggering menu")
+            }
+
+            render_map = (route, navigator) => {
+              return (
+                <MapView.Animated
+                region={this.state.region}
+                style={styles.map}
+                onRegionChange={(region) => {
+                  this.setState({region})
+                  console.log("REGION CHANGED", this.state.region)
+                }}
+                onRegionChangeComplete={() => {}}
+                showsUserLocation={true}
+                followsUserLocation={true}
+                >
+                {this.state.markers.map((marker, index) => (
+                  <MapView.Marker
                   key={index}
                   coordinate={marker.latlng}
                   title={marker.title}
                   description={marker.description}
-              >
-                <MapView.Callout
-                    tooltip={true}
-                    onPress={() =>
-                    {this.props.navigator(1)}
-                    }>
-                  <CustomCallout>
-                    <Text style={styles.header}>{marker.title}</Text>
-                    <Image
-                        style={{resizeMode: 'contain', height:100}}
-                        source={{uri: marker.img_url}}
-                    />
-                  </CustomCallout>
-                </MapView.Callout>
-              </MapView.Marker>
-          ))}
-        </MapView>
-    );
-  }
-// Class is currently unused, semi prepared 
-  render(){
-    return(
-        <Navigator
-            navigationBar={
-              <Navigator.NavigationBar
-                  routeMapper={{
-                    LeftButton: (route, navigator, index, navState) => {},
-                    //   { return (
-                    //     <Icon.Button
-                    //     name="bars"
-                    //     size={25}
-                    //     padding={15}
-                    //     color="#000000"
-                    //     backgroundColor='rgba(31, 103, 158, 0.3)'
-                    //     onPress={this.trigger_menu}
-                    //     borderRadius={60}
-                    //     iconStyle={{marginLeft: 5, marginRight: 5}}
-                    //     />);
-                    // },
-                    RightButton: (route, navigator, index, navState) =>
-                    {},
-                    Title: (route, navigator, index, navState) =>
-                    {},
-                  }}
-                  style={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}}
-              />
+                  >
+                  <MapView.Callout
+                  tooltip={true}
+                  onPress={() =>
+                   {this.props.navigator(1)}
+                 }>
+                 <CustomCallout>
+                   <Text style={styles.header}>{marker.title}</Text>
+                   <Image
+                       style={{resizeMode: 'contain', height:100}}
+                       source={{uri: marker.img_url}}
+                   />
+                 </CustomCallout>
+                 </MapView.Callout>
+                 </MapView.Marker>
+                 ))}
+                </MapView.Animated>
+                );
             }
-            renderScene={this.render_map}
-        />
+// Class is currently unused, semi prepared 
+render(){
+  return(
+    <Navigator
+    navigationBar={
+      <Navigator.NavigationBar
+      routeMapper={{
+        LeftButton: (route, navigator, index, navState) => {},
+        //   { return (
+        //     <Icon.Button
+        //     name="bars"
+        //     size={25}
+        //     padding={15}
+        //     color="#000000"
+        //     backgroundColor='rgba(31, 103, 158, 0.3)'
+        //     onPress={this.trigger_menu}
+        //     borderRadius={60}
+        //     iconStyle={{marginLeft: 5, marginRight: 5}}
+        //     />);
+        // },
+        RightButton: (route, navigator, index, navState) =>
+        {},
+        Title: (route, navigator, index, navState) =>
+        {},
+      }}
+      style={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}}
+      />
+    }
+    renderScene={this.render_map}
+    />
     );
-  }
+}
 }
