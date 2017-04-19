@@ -33,8 +33,8 @@ styles = StyleSheet.create({
 });
 
 // Map markers etc
-const LATITUDE_DELTA_DEFAULT = 0.1;
-const LONGITUDE_DELTA_DEFAULT = 0.1;
+const LATITUDE_DELTA_DEFAULT = 0;
+const LONGITUDE_DELTA_DEFAULT = 0;
 
 const statues_location = [
   {latlng: {
