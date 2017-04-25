@@ -13,8 +13,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 
 import WelcomeModal from './components/WelcomeModal'
-import Menu from './components/Menu';
 import ChatScreen from './components/Chat';
+import AboutScreen from './components/About'
 import Map from './components/Map'
 
 var initialLayout = {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   tabbar: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    height: 40,
+    height: 50,
     width: Dimensions.get('window').width
   },
 });
@@ -41,8 +41,9 @@ class HomeScreen extends React.Component {
   state = {
     index: 0,
     routes: [
-    { key: '1', title: 'HomeScreen', icon: 'map-marker'},
-    { key: '2', title: 'ChatScreen', icon: 'wechat'},
+    { key: '1', title: '', icon: 'map-marker'},
+    { key: '2', title: '', icon: 'wechat'},
+    { key: '3', title: '', icon: 'question'},
     ],
   };
 
@@ -76,9 +77,11 @@ class HomeScreen extends React.Component {
   _renderScene = ({ route }) => {
     switch (route.key) {
       case '1':
-      return ( <Map navigator={this._goTo}/> );
+      return ( <Map navigator={this._goTo} /> );
       case '2':
       return ( <ChatScreen/> );
+      case '3':
+      return ( <AboutScreen/> );
       default:
       return null;
     }
