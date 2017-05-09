@@ -96,7 +96,6 @@ export default class Map extends Component {
     .then((response) => response.json())
     .then((data) => {
       this.statues = JSON.parse(data.latest_statue_list);
-      console.log('-------', this.statues)
       this.setState({markers_loaded: true});
     })
     .catch((error) => console.log(error));
@@ -139,7 +138,7 @@ export default class Map extends Component {
   }
 
   focus_marker(statue_index) {
-    var statue = statues_location[statue_index];
+    var statue = this.statues[statue_index];
     this.setState({
       region : {
         latitude: statue.latlng.latitude,
@@ -192,9 +191,9 @@ export default class Map extends Component {
         }}
         onRegionChangeComplete={() => {}}
         showsUserLocation={true}
-                >
-                </MapView.Animated>
-                );
+        >
+        </MapView.Animated>
+        );
     } else {
       return (
         <MapView.Animated
@@ -206,10 +205,10 @@ export default class Map extends Component {
         }}
         onRegionChangeComplete={() => {}}
         showsUserLocation={true}
-                >
-                {  this.display_markers() }
-                </MapView.Animated>
-                );
+        >
+        {  this.display_markers() }
+        </MapView.Animated>
+        );
     }
   }
 // Class is currently unused, semi prepared 
@@ -220,28 +219,16 @@ render(){
       <Navigator.NavigationBar
       routeMapper={{
         LeftButton: (route, navigator, index, navState) => {},
-                    //   { return (
-                    //     <Icon.Button
-                    //     name="bars"
-                    //     size={25}
-                    //     padding={15}
-                    //     color="#000000"
-                    //     backgroundColor='rgba(31, 103, 158, 0.3)'
-                    //     onPress={this.trigger_menu}
-                    //     borderRadius={60}
-                    //     iconStyle={{marginLeft: 5, marginRight: 5}}
-                    //     />);
-                    // },
-                    RightButton: (route, navigator, index, navState) =>
-                    {},
-                    Title: (route, navigator, index, navState) =>
-                    {},
-                  }}
-                  style={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}}
-                  />
-                }
-                renderScene={this.render_map}
-                />
-                );
+        RightButton: (route, navigator, index, navState) =>
+        {},
+        Title: (route, navigator, index, navState) =>
+        {},
+      }}
+      style={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}}
+      />
+    }
+    renderScene={this.render_map}
+    />
+    );
 }
 }

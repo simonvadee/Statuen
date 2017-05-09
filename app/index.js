@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 
+import AbstractBeacon from './components/Beacons'
 import WelcomeModal from './components/WelcomeModal'
 import ChatScreen from './components/Chat';
 import AboutScreen from './components/About'
@@ -101,6 +102,7 @@ class HomeScreen extends React.Component {
   }
 }
 
-
+AbstractBeacon.init();
+console.log("------------------------------- here")
 AppRegistry.registerComponent('TalkingStatuesApp', () => HomeScreen);
 

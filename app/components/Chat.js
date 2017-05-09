@@ -6,6 +6,8 @@ import {
 
 import { GiftedChat } from 'react-native-gifted-chat';
 
+// ON ANDROID, BLANK SCREEN UNTIL WE CLICK ON THE INPUT --> TO FIX !!!!!!
+
 // Class name is name used for StackNavigator navigation
 export default class ChatScreen extends Component {
   static navigationOptions = {
@@ -13,7 +15,16 @@ export default class ChatScreen extends Component {
     title: ({ state }) => `${state.params.name}`,
   };
 
+  componentDidMount() {
+  	console.log("DID MOUNT");
+  }
+
+  componentDidUpdate() {
+  	console.log("DID UPDATE");
+  }
+
   componentWillMount() {
+  	console.log("WILL MOUNT");
     this.setState({
       messages: [
         {
@@ -45,6 +56,7 @@ export default class ChatScreen extends Component {
   }
 
   render() {
+  	console.log("RENDERING NOW")
     return (
 			<GiftedChat
 					messages={this.state.messages}
