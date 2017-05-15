@@ -35,7 +35,7 @@ Running on Android
 react-native run-android
 ```
 
-Running via device, easist to open appropiate project file (ios example /ios/*.xcodeproject) for ios / android in either android studio or xcode, select device via build options / run.
+Running via device, easiest to open appropiate project file (ios example /ios/*.xcodeproject) for ios / android in either android studio or xcode, select device via build options / run.
  
  ### Logging / debugging 
  iOS debug
