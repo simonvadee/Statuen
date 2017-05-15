@@ -13,7 +13,7 @@ export default class AbstractBeacon {
 	static init() {
 		const region = {
 			identifier: "test",
-			uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D"
+			uuid: "b9407f30-f5f8-466e-aff9-25556b57fe6d"
 		}
 		Beacons.requestAlwaysAuthorization();
 		Beacons.startRangingBeaconsInRegion(region);
