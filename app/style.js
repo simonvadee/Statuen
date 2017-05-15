@@ -31,5 +31,6 @@ module.exports = StyleSheet.create({
     position: 'absolute',
     right:20,
     top: 20,
-  }
+  },
+
 });
