@@ -102,6 +102,6 @@ class HomeScreen extends React.Component {
   }
 }
 
-AbstractBeacon.init();
+// AbstractBeacon.init();
 AppRegistry.registerComponent('TalkingStatuesApp', () => HomeScreen);
 
