@@ -98,7 +98,6 @@ export default class Map extends Component {
   }
 
   focus_marker(statue_index) {
-    console.info('Focusing on marker: ', statue_index);
     var statue = this.state.statues[statue_index];
     this.setState({
       region : {
@@ -133,8 +132,9 @@ export default class Map extends Component {
               <View style={{}}>
                 <Text style={styles.header}>{marker.fields.name}</Text>
                 <Image
-                    style={{resizeMode: 'contain', height:100}}
-                    source={{uri: marker.fields.pictures}}
+                    style={{resizeMode: 'contain', width:null, height:100}}
+                    source={require('../src/avatar.png')}
+                    // source={{uri: marker.fields.pictures}}
                 />
               </View>
             </CustomCallout>
