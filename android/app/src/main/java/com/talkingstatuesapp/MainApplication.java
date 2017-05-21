@@ -3,6 +3,7 @@ package com.talkingstatuesapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.cboy.rn.splashscreen.SplashScreenReactPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SplashScreenReactPackage(),
             new ReactNativePushNotificationPackage(),
             new BeaconsAndroidPackage(),
             new VectorIconsPackage(),

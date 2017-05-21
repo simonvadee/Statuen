@@ -10,17 +10,18 @@ import {
   DeviceEventEmitter,
   Platform
 } from 'react-native'
-
+// Plugins
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
-
 import PushNotification from 'react-native-push-notification'
 import PushNotificationAndroid from 'react-native-push-notification'
+import SplashScreen from 'react-native-splash-screen'
 
-
+// Components
 import Map from './components/Map';
+
+// Screens
 import AbstractBeacon from './components/Beacons'
-import WelcomeModal from './components/WelcomeModal'
 import ChatScreen from './components/Chat';
 import AboutScreen from './components/About/About'
 
@@ -76,6 +77,7 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
+    SplashScreen.hide(); // Hide Splashscreen after finishing loading of app.
     if (Platform.OS === 'android')
       PushNotificationAndroid.registerNotificationActions(['OK']);
     DeviceEventEmitter.addListener('notificationActionReceived', this.handleNotificationCallback);
