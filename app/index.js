@@ -77,7 +77,7 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    SplashScreen.hide(); // Hide Splashscreen after finishing loading of app.
+    //SplashScreen.hide(); // Hide Splashscreen after finishing loading of app.
     if (Platform.OS === 'android')
       PushNotificationAndroid.registerNotificationActions(['OK']);
     DeviceEventEmitter.addListener('notificationActionReceived', this.handleNotificationCallback);
