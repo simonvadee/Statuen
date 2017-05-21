@@ -36,44 +36,6 @@ styles = StyleSheet.create({
 const LATITUDE_DELTA_DEFAULT = 0.05;
 const LONGITUDE_DELTA_DEFAULT = 0.05;
 
-// const statues_location = [
-// {latlng: {
-//   latitude: 52.079875,
-//   longitude: 4.315880},
-//   title: "Really long statue name",
-//   description: "test",
-//   img_url: "https://scontent-ams3-1.xx.fbcdn.net/v/t1.0-9/17523650_253318928466104_510830095466575552_n.jpg?oh=a2d2a4bc1706285a101ccf1a78b39c0a&oe=598AC27C"
-// },
-// {latlng: {
-//   latitude: 52.082937,
-//   longitude: 4.314736},
-//   title: "Statue2",
-//   description: "test",
-//   img_url: "https://digventures.com/wp-content/uploads/2014/11/statue-selfie-Getty-museum-520x600.jpg"
-// },
-// {latlng: {
-//   latitude: 52.080756,
-//   longitude: 4.312053},
-//   title: "Statue3",
-//   description: "test",
-//   img_url: "https://digventures.com/wp-content/uploads/2014/11/statue-selfie-Getty-museum-520x600.jpg"
-// },
-// {latlng: {
-//   latitude: 52.080173,
-//   longitude: 4.309923},
-//   title: "Statue4",
-//   description: "test",
-//   img_url: "https://3.bp.blogspot.com/-pb530UhjJi0/V8madVrx1RI/AAAAAAAAITQ/MXJlk7oEyws62hau9UAqQgff87fWej-tgCLcB/s1600/MoscowAug-12.jpg"
-// },
-// {latlng: {
-//   latitude: 52.079281,
-//   longitude: 4.312103},
-//   title: "Statue5",
-//   description: "test",
-//   img_url: "https://3.bp.blogspot.com/-pb530UhjJi0/V8madVrx1RI/AAAAAAAAITQ/MXJlk7oEyws62hau9UAqQgff87fWej-tgCLcB/s1600/MoscowAug-12.jpg"
-// },
-// ]
-
 export default class Map extends Component {
 
   watchID: ?number = null;
@@ -94,7 +56,7 @@ export default class Map extends Component {
     fetch('http://api.talkingstatues.xyz/statues')
     .then((response) => response.json())
     .then((data) => {
-      this.statues = JSON.parse(data.latest_statue_list);
+      this.setState({"statues": JSON.parse(data.latest_statue_list)});
       this.setState({markers_loaded: true});
     })
     .catch((error) => console.log(error));
@@ -137,11 +99,11 @@ export default class Map extends Component {
   }
 
   focus_marker(statue_index) {
-    var statue = this.statues[statue_index];
+    var statue = this.state.statues[statue_index];
     this.setState({
       region : {
-        latitude: statue.latlng.latitude,
-        longitude: statue.latlng.longitude,
+        latitude: statue.fields.latitude,
+        longitude: statue.fields.longitude,
         latitudeDelta: this.state.region.latitudeDelta,
         longitudeDelta: this.state.region.longitudeDelta,
       }
@@ -149,7 +111,7 @@ export default class Map extends Component {
   }
 
   display_markers() {
-    return this.statues.map((marker, index) => (
+    return this.state.statues.map((marker, index) => (
       <MapView.Marker
       key={index}
       coordinate={ marker.fields }

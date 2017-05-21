@@ -6,17 +6,36 @@ import {
   Button,
   StyleSheet,
   Navigator,
-  Dimensions
+  Dimensions,
+  DeviceEventEmitter,
+  Platform
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 
+import PushNotification from 'react-native-push-notification'
+import PushNotificationAndroid from 'react-native-push-notification'
+
+
+import Map from './components/Map';
 import AbstractBeacon from './components/Beacons'
 import WelcomeModal from './components/WelcomeModal'
 import ChatScreen from './components/Chat';
 import AboutScreen from './components/About'
-import Map from './components/Map'
+
+
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) { 
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+  };
+}
 
 var initialLayout = {
   height: 0,
@@ -46,6 +65,42 @@ class HomeScreen extends React.Component {
     { key: '2', title: '', icon: 'wechat'},
     { key: '3', title: '', icon: 'question'},
     ],
+  };
+
+  constructor(props) {
+    super(props)
+    AbstractBeacon.init();
+  }
+
+  componentDidMount() {
+    if (Platform.OS === 'android')
+      PushNotificationAndroid.registerNotificationActions(['OK']);
+    DeviceEventEmitter.addListener('notificationActionReceived', this.handleNotificationCallback);
+
+    PushNotification.configure({
+        // (optional) Called when Token is generated (iOS and Android)
+        onRegister: function(token) {
+          console.log( 'TOKEN:', token );
+        },
+        // (required) Called when a remote or local notification is opened or received
+        onNotification: function(notification) {
+          console.log( 'NOTIFICATION:', notification);
+          if (Platform.OS === 'ios')
+            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}"}'.format(notification.category)})
+          if (Platform.OS === 'android')
+            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}"}'.format(notification.tag)})
+        },
+        popInitialNotification: true,
+        requestPermissions: true,
+        });
+  }
+
+  handleNotificationCallback = (action) => {
+    console.log ('+++++++++++== Notification action received: ' + action, action.dataJSON);
+    const info = JSON.parse(action.dataJSON);
+    if (info.action == 'OK') {
+      this._goTo(1);
+    }
   };
 
   _goTo = (index) => {
@@ -102,6 +157,5 @@ class HomeScreen extends React.Component {
   }
 }
 
-AbstractBeacon.init();
 AppRegistry.registerComponent('TalkingStatuesApp', () => HomeScreen);
 
