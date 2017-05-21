@@ -22,7 +22,7 @@ import Map from './components/Map';
 import AbstractBeacon from './components/Beacons'
 import WelcomeModal from './components/WelcomeModal'
 import ChatScreen from './components/Chat';
-import AboutScreen from './components/About'
+import AboutScreen from './components/About/About'
 
 
 if (!String.prototype.format) {
