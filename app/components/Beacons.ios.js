@@ -52,8 +52,6 @@ const subscription = DeviceEventEmitter.addListener(
 				title: "<Statuen>",
 				message: "There is a statue nearby :)", // (required)
 				date: Date.now(),
-				actions: '["Chat !"]',
-				tag: 'OK',
 				category: 'OK'
 			});
 			switch(data.beacons[0].minor){

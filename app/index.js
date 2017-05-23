@@ -98,6 +98,14 @@ class HomeScreen extends React.Component {
         requestPermissions: true,
         });
 
+          PushNotification.localNotification({
+        title: "<Statuen>",
+        message: "There is a statue nearby :)", // (required)
+        date: Date.now(),
+        category: 'OK'
+      });
+
+
   }
 
   handleNotificationCallback = (action) => {

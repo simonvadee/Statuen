@@ -15,7 +15,6 @@ export default class AbstractBeacon {
 	static isBeaconKnown(beacon_uuid) {
 		if (AbstractBeacon.all_beacons != null) {
 			for (let i = 0; i < AbstractBeacon.all_beacons.length; i++) {
-				// console.log(AbstractBeacon.all_beacons[i].fields.uuid, "===============", beacon_uuid)
 				if (AbstractBeacon.all_beacons[i].fields.uuid == beacon_uuid)
 					return true;
 			}
