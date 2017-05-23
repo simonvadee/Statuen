@@ -16,6 +16,7 @@ import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 
 import PushNotification from 'react-native-push-notification'
 import PushNotificationAndroid from 'react-native-push-notification'
+import {PushNotificationIOS} from 'react-native';
 
 
 import Map from './components/Map';
@@ -76,9 +77,10 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'android')
+    if (Platform.OS === 'android') {
       PushNotificationAndroid.registerNotificationActions(['OK']);
-    DeviceEventEmitter.addListener('notificationActionReceived', this.handleNotificationCallback);
+      DeviceEventEmitter.addListener('notificationActionReceived', this.handleNotificationCallback);
+    }
 
     PushNotification.configure({
         // (optional) Called when Token is generated (iOS and Android)
@@ -96,6 +98,16 @@ class HomeScreen extends React.Component {
         popInitialNotification: true,
         requestPermissions: true,
         });
+
+setTimeout(() => {
+    console.info('presenting local notification!');
+    PushNotificationIOS.presentLocalNotification({
+        alertBody: 'This is a local notification!',
+        category: 'something_happened'
+    });
+}, 5000);
+
+
   }
 
   handleNotificationCallback = (action) => {
