@@ -76,9 +76,10 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'android')
+    if (Platform.OS === 'android') {
       PushNotificationAndroid.registerNotificationActions(['OK']);
-    DeviceEventEmitter.addListener('notificationActionReceived', this.handleNotificationCallback);
+      DeviceEventEmitter.addListener('notificationActionReceived', this.handleNotificationCallback);
+    }
 
     PushNotification.configure({
         // (optional) Called when Token is generated (iOS and Android)
@@ -96,6 +97,7 @@ class HomeScreen extends React.Component {
         popInitialNotification: true,
         requestPermissions: true,
         });
+
   }
 
   handleNotificationCallback = (action) => {
