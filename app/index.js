@@ -22,7 +22,7 @@ import Map from './components/Map';
 import AbstractBeacon from './components/Beacons'
 import WelcomeModal from './components/WelcomeModal'
 import ChatScreen from './components/Chat';
-import AboutScreen from './components/About'
+import AboutScreen from './components/About/About'
 
 
 if (!String.prototype.format) {
@@ -36,6 +36,7 @@ if (!String.prototype.format) {
     });
   };
 }
+const StatusbarHeight = Platform.OS === 'ios' ? 10 : 0;
 
 var initialLayout = {
   height: 0,
@@ -49,11 +50,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingTop:StatusbarHeight,
+
   },
   tabbar: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',
     height: 50,
-    width: Dimensions.get('window').width
+    width: Dimensions.get('window').width,
   },
 });
 
