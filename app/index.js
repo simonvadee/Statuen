@@ -16,6 +16,7 @@ import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 
 import PushNotification from 'react-native-push-notification'
 import PushNotificationAndroid from 'react-native-push-notification'
+import {PushNotificationIOS} from 'react-native';
 
 
 import Map from './components/Map';
@@ -98,12 +99,13 @@ class HomeScreen extends React.Component {
         requestPermissions: true,
         });
 
-          PushNotification.localNotification({
-        title: "<Statuen>",
-        message: "There is a statue nearby :)", // (required)
-        date: Date.now(),
-        category: 'OK'
-      });
+setTimeout(() => {
+    console.info('presenting local notification!');
+    PushNotificationIOS.presentLocalNotification({
+        alertBody: 'This is a local notification!',
+        category: 'something_happened'
+    });
+}, 5000);
 
 
   }
