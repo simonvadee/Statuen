@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { TabViewAnimated, TabBar } from 'react-native-tab-view';
+import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 
 import PushNotification from 'react-native-push-notification'
 import PushNotificationAndroid from 'react-native-push-notification'
@@ -37,7 +37,12 @@ if (!String.prototype.format) {
     });
   };
 }
+
 const StatusbarHeight = Platform.OS === 'ios' ? 10 : 0;
+
+const MapRoute = () => ( <View style={styles.container}> <Map navigator={this._goTo}/> </View> );
+const ChatRoute = () => ( <View style={styles.container}> <ChatScreen/> </View> );
+const AboutRoute = () => ( <View style={styles.container}> <AboutScreen/> </View> );
 
 var initialLayout = {
   height: 0,
@@ -99,13 +104,13 @@ class HomeScreen extends React.Component {
         requestPermissions: true,
         });
 
-setTimeout(() => {
-    console.info('presenting local notification!');
-    PushNotificationIOS.presentLocalNotification({
-        alertBody: 'This is a local notification!',
-        category: 'something_happened'
-    });
-}, 5000);
+// setTimeout(() => {
+//     console.info('presenting local notification!');
+//     PushNotificationIOS.presentLocalNotification({
+//         alertBody: 'This is a local notification!',
+//         category: 'something_happened'
+//     });
+// }, 5000);
 
 
   }
@@ -146,6 +151,7 @@ setTimeout(() => {
   };
 
   _renderScene = ({ route }) => {
+    console.log('-------------------', route, this.state)
     switch (route.key) {
       case '1':
       return ( <Map navigator={this._goTo} /> );
@@ -158,11 +164,18 @@ setTimeout(() => {
     }
   };
 
+  // _renderScene = SceneMap({
+  //   '1': MapRoute,
+  //   '2': ChatRoute,
+  //   '3': AboutRoute
+  // })
+
   render() {
     return (
       <TabViewAnimated
       initialLayout={initialLayout}
       style={styles.container}
+      lazy={true}
       navigationState={this.state}
       renderScene={this._renderScene}
       renderHeader={this._renderHeader}
