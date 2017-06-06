@@ -9,7 +9,7 @@ export default class PushNotify{
   static Push(message) {
     PushNotification.localNotification({
       title: "<Statuen>",
-      message: message+" Beacon detected", // (required)
+      message: message, // (required)
       date: Date.now(),
       category: 'OK'
     });
