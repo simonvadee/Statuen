@@ -151,7 +151,6 @@ class HomeScreen extends React.Component {
   };
 
   _renderScene = ({ route }) => {
-    console.log('-------------------', route, this.state)
     switch (route.key) {
       case '1':
       return ( <Map navigator={this._goTo} /> );

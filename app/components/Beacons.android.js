@@ -59,14 +59,7 @@ export default class AbstractBeacon {
 								tag: 'OK',
 								category: 'OK'
 							});
-							// fetch('http://talkingstatues.xyz/api/beaconsDetected')
-							// .then((response) => response.json())
-							// .then((data) => {
-							// 	this.statuesDetected = JSON.parse(data.beaconMatches);
-							// 	for match in matches:
-							// 		send push notificaction with link on the chat
-							// })
-							// .catch((error) => console.log(error));
+
 						}
 					}
 				}
