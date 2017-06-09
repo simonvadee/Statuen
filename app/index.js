@@ -101,9 +101,9 @@ class HomeScreen extends React.Component {
         onNotification: function(notification) {
           console.log( 'NOTIFICATION:', notification);
           if (Platform.OS === 'ios')
-            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":{1} }'.format(notification.category, notification.number)})
+            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.category, notification.slug)})
           if (Platform.OS === 'android')
-            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":{1} }'.format(notification.tag, notification.number)})
+            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.tag, notification.slug)})
         },
         popInitialNotification: true,
         requestPermissions: true,
@@ -122,7 +122,6 @@ class HomeScreen extends React.Component {
       const info = JSON.parse(action.dataJSON);
       if (info.action == 'OK') {
         let statue_data = this.findStatue(info.slug);
-        consoele.log("FOUND :: ", statue_data)
         this._goTo(1, statue_data);
       }
     };
