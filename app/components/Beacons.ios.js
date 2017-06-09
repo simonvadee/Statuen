@@ -14,10 +14,10 @@ export default class AbstractBeacon {
 		if (AbstractBeacon.all_beacons != null) {
 			for (let i = 0; i < AbstractBeacon.all_beacons.length; i++) {
 				if (AbstractBeacon.all_beacons[i].fields.uuid.toLowerCase() == beacon_uuid)
-					return true;
+					return AbstractBeacon.all_beacons[i].fields.slug_statue;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	static init() {
@@ -51,15 +51,17 @@ export default class AbstractBeacon {
 		(data) => {
 			console.info('Searching for Beacons in this Region: ' +ndata.region.identifier);
 			for (let i = 0; i < data.beacons.length; i++) {
-				if (AbstractBeacon.isBeaconKnown(data.beacons[i].uuid)) {
+				let statue_slug = null;
+				if ((statue_slug = AbstractBeacon.isBeaconKnown(data.beacons[i].uuid)) != null) {
 					if (AbstractBeacon.active_beacons.indexOf(data.beacons[i].uuid) < 0) {
 						AbstractBeacon.active_beacons.push(data.beacons[i].uuid);
-						console.log("NEW BEACONS INSERTED")
+						console.log("NEW BEACONS INSERTED", statue_slug)
 						PushNotification.localNotification({
 							title: "<Statuen>",
 							message: "There is a statue nearby :)", // (required)
 							date: Date.now(),
-							category: 'OK'
+							category: 'OK',
+							slug: statue_slug //statue_slug
 						});
 
 					}

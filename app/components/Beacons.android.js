@@ -21,10 +21,6 @@ export default class AbstractBeacon {
 		return null;
 	}
 
-	static lastActiveStatue() {
-		return AbstractBeacon.active_beacons[AbstractBeacon.active_beacons.length - 1].statue;
-	}
-
 	static init() {
 
 		fetch('http://api.talkingstatues.xyz/beacons')
