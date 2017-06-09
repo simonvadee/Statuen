@@ -31,18 +31,14 @@ if (!String.prototype.format) {
     var args = arguments;
     return this.replace(/{(\d+)}/g, function(match, number) { 
       return typeof args[number] != 'undefined'
-        ? args[number]
-        : match
+      ? args[number]
+      : match
       ;
     });
   };
 }
 
 const StatusbarHeight = Platform.OS === 'ios' ? 10 : 0;
-
-const MapRoute = () => ( <View style={styles.container}> <Map navigator={this._goTo}/> </View> );
-const ChatRoute = () => ( <View style={styles.container}> <ChatScreen/> </View> );
-const AboutRoute = () => ( <View style={styles.container}> <AboutScreen/> </View> );
 
 var initialLayout = {
   height: 0,
@@ -79,6 +75,15 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props)
     AbstractBeacon.init();
+
+    fetch('http://api.talkingstatues.xyz/statues')
+    .then((response) => response.json())
+    .then((data) => {
+      this.setState({"statues": JSON.parse(data.latest_statue_list)});
+      console.log("statues :::::::: ", this.state.statues)
+    })
+    .catch((error) => console.log(error));
+
   }
 
   componentDidMount() {
@@ -96,93 +101,87 @@ class HomeScreen extends React.Component {
         onNotification: function(notification) {
           console.log( 'NOTIFICATION:', notification);
           if (Platform.OS === 'ios')
-            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}"}'.format(notification.category)})
+            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":{1} }'.format(notification.category, notification.number)})
           if (Platform.OS === 'android')
-            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}"}'.format(notification.tag)})
+            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":{1} }'.format(notification.tag, notification.number)})
         },
         popInitialNotification: true,
         requestPermissions: true,
-        });
-
-// setTimeout(() => {
-//     console.info('presenting local notification!');
-//     PushNotificationIOS.presentLocalNotification({
-//         alertBody: 'This is a local notification!',
-//         category: 'something_happened'
-//     });
-// }, 5000);
-
-
+      });
   }
 
-  handleNotificationCallback = (action) => {
-    console.log ('+++++++++++== Notification action received: ' + action, action.dataJSON);
-    const info = JSON.parse(action.dataJSON);
-    if (info.action == 'OK') {
-      this._goTo(1);
+  findStatue = (slug) => {
+    for (let i = 0; i < this.state.statues.length; i++) {
+      if (this.state.statues[i].fields.slug == slug)
+        return this.state.statues[i].fields
     }
   };
 
-  _goTo = (index) => {
-    this.setState({index})
-  };
+    handleNotificationCallback = (action) => {
+      console.log ('+++++++++++== Notification action received: ' + action, action.dataJSON);
+      const info = JSON.parse(action.dataJSON);
+      if (info.action == 'OK') {
+        let statue_data = this.findStatue(info.slug);
+        consoele.log("FOUND :: ", statue_data)
+        this._goTo(1, statue_data);
+      }
+    };
 
-  _handleChangeTab = (index) => {
-    this.setState({ index });
-  };
+    _goTo = (index, statue) => {
+      this.setState({index: index, statue:statue})
+    };
 
-  _renderIcon = ({ route }: any) => {
-    return (
-      <Icon
-      name={route.icon}
-      size={24}
-      color='black'
-      />
-      );
-  };
+    _handleChangeTab = (index) => {
+      this.setState({ index });
+    };
 
-  _renderHeader = (props) => {
-    return (
-      <TabBar
-      {...props}
-      renderIcon={this._renderIcon}
-      style={styles.tabbar}
-      />);
-  };
+    _renderIcon = ({ route }: any) => {
+      return (
+        <Icon
+        name={route.icon}
+        size={24}
+        color='black'
+        />
+        );
+    };
 
-  _renderScene = ({ route }) => {
-    switch (route.key) {
-      case '1':
-      return ( <Map navigator={this._goTo} /> );
-      case '2':
-      return ( <ChatScreen/> );
-      case '3':
-      return ( <AboutScreen/> );
-      default:
-      return null;
+    _renderHeader = (props) => {
+      return (
+        <TabBar
+        {...props}
+        renderIcon={this._renderIcon}
+        style={styles.tabbar}
+        />);
+    };
+
+    _renderScene = ({ route }) => {
+      switch (route.key) {
+        case '1':
+        return ( <Map navigator={this._goTo} statues={this.state.statues} /> );
+        case '2':
+        return ( <ChatScreen statue={this.state.statue}/> );
+        case '3':
+        return ( <AboutScreen/> );
+        default:
+        return null;
+      }
+    };
+
+
+    render() {
+      return (
+        <TabViewAnimated
+        initialLayout={initialLayout}
+        style={styles.container}
+        lazy={true}
+        navigationState={this.state}
+        renderScene={this._renderScene}
+        renderHeader={this._renderHeader}
+        onRequestChangeTab={this._handleChangeTab}
+        />
+        );
     }
-  };
-
-  // _renderScene = SceneMap({
-  //   '1': MapRoute,
-  //   '2': ChatRoute,
-  //   '3': AboutRoute
-  // })
-
-  render() {
-    return (
-      <TabViewAnimated
-      initialLayout={initialLayout}
-      style={styles.container}
-      lazy={true}
-      navigationState={this.state}
-      renderScene={this._renderScene}
-      renderHeader={this._renderHeader}
-      onRequestChangeTab={this._handleChangeTab}
-      />
-      );
   }
-}
 
-AppRegistry.registerComponent('TalkingStatuesApp', () => HomeScreen);
+  AppRegistry.registerComponent('TalkingStatuesApp', () => HomeScreen);
 

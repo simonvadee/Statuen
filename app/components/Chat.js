@@ -6,10 +6,8 @@ import {
 
 import { GiftedChat } from 'react-native-gifted-chat';
 
-// ON ANDROID, BLANK SCREEN UNTIL WE CLICK ON THE INPUT --> TO FIX !!!!!!
-
-// Class name is name used for StackNavigator navigation
 export default class ChatScreen extends Component {
+
   static navigationOptions = {
     // Nav options can be defined as a function of the navigation prop:
     title: ({ state }) => `${state.params.name}`,
@@ -40,82 +38,102 @@ export default class ChatScreen extends Component {
   }
 
   componentDidMount() {
-   console.log("DID MOUNT");
- }
+    console.log("DID MOUNT");
+  }
 
- componentDidUpdate() {
-   console.log("DID UPDATE");
- }
+  componentDidUpdate() {
+    console.log("DID UPDATE");
+  }
 
- componentWillMount() {
-   console.log("WILL MOUNT");
-   this._isMounted = true;
-   this.setState({
-    messages: [
+  componentWillReceiveProps(props) {
+    // console.log('NEW PROPS', props, this.props);
+    statue = props.statue;
+    if (statue != undefined && statue.slug != this.props.statue.slug) {
+
+      this.setState({
+        statue: statue,
+        messages: this.initialMessages(statue.name)
+      });
+    }
+    else if (this.state.statue == undefined && statue != undefined) {
+      this.setState({
+        statue: statue,
+        messages: this.initialMessages(statue.name)
+      })
+    }
+    else if (statue == undefined) {
+      this.setState({
+        statue: statue,
+        messages: this.initialMessages("not even a statue")
+      })
+    }
+  }
+
+  initialMessages(name) {
+    return [
     {
       _id: 1,
-      text: 'Hello developer',
-      createdAt: new Date(Date.UTC(2016, 7, 30, 17, 20, 0)),
+      text: "Hello developer, I am " + name,
+      createdAt: new Date(),
       user: {
         _id: 2,
         name: 'React Native',
         avatar: 'https://facebook.github.io/react/img/logo_og.png',
       },
     },
-    ],
-  });
- }
-
- onSend(messages = []) {
-  for (let i = 0; i < messages.length; i++) {
-    fetch('http://api.talkingstatues.xyz/api/chatterbot/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        text: messages[i].text,
-      })
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      let response = [{
-        _id: this.state.messages.length + 1,
-        text: data.text,
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://facebook.github.io/react/img/logo_og.png',
-        },
-      }];
-
-      this.setState((previousState) => {
-        return {
-          messages: GiftedChat.append(previousState.messages, response),
-        };
-      });
-    })
-    .catch((error) => console.log(error));
+    ]
   }
 
-  this.setState((previousState) => {
-    return {
-      messages: GiftedChat.append(previousState.messages, messages),
-    };
-  });
-}
+  onSend(messages = []) {
+    for (let i = 0; i < messages.length; i++) {
+      fetch('http://api.talkingstatues.xyz/api/chatterbot/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          text: this.state.statue.slug.concat(' ').concat(messages[i].text),
+        })
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        let response = [{
+          _id: this.state.messages.length + 1,
+          text: data.text,
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'https://facebook.github.io/react/img/logo_og.png',
+          },
+        }];
 
-render() {
- console.log("RENDERING NOW")
- return (
-   <GiftedChat
-   messages={this.state.messages}
-   onSend={this.onSend}
-   user={{
-    _id: 1,
-  }}
-  />
-  );
-}
+        this.setState((previousState) => {
+          return {
+            messages: GiftedChat.append(previousState.messages, response),
+          };
+        });
+      })
+      .catch((error) => console.log(error));
+    }
+
+    this.setState((previousState) => {
+      return {
+        messages: GiftedChat.append(previousState.messages, messages),
+      };
+    });
+  }
+
+  render() {
+   console.log("RENDERING NOW")
+   return (
+     <GiftedChat
+     messages={this.state.messages}
+     onSend={this.onSend}
+     user={{
+      _id: 1,
+    }}
+    />
+    );
+ }
 }
