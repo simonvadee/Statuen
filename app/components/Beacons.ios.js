@@ -10,10 +10,12 @@ export default class AbstractBeacon {
   static all_beacons = null;
   static active_beacons = [];
 
-  static isBeaconKnown(beacon_uuid) {
+  static isBeaconKnown(beacon_uuid, minor) {
     if (AbstractBeacon.all_beacons != null) {
       for (let i = 0; i < AbstractBeacon.all_beacons.length; i++) {
-        if (AbstractBeacon.all_beacons[i].fields.uuid.toLowerCase() == beacon_uuid.toLowerCase()) {
+        if (AbstractBeacon.all_beacons[i].fields.uuid.toLowerCase() == beacon_uuid.toLowerCase()
+          && AbstractBeacon.all_beacons[i].fields.min_value == minor)
+        {
           return AbstractBeacon.all_beacons[i].fields.slug_statue;
         }
       }
@@ -27,12 +29,12 @@ export default class AbstractBeacon {
     // identifier + uuid + major or identifier + uuid + major + minor
     // (minor and major properties are numbers)
     fetch('http://api.talkingstatues.xyz/beacons')
-        .then((response) => response.json())
-        .then((data) => {
-          AbstractBeacon.all_beacons = JSON.parse(data.latest_beacon_list);
-          console.log("FECTHED", AbstractBeacon.all_beacons);
-        })
-        .catch((error) => console.log(error));
+    .then((response) => response.json())
+    .then((data) => {
+      AbstractBeacon.all_beacons = JSON.parse(data.latest_beacon_list);
+      console.log("FECTHED", AbstractBeacon.all_beacons);
+    })
+    .catch((error) => console.log(error));
 
     const region = {
       identifier: 'Den Haag',
@@ -48,26 +50,26 @@ export default class AbstractBeacon {
 
     // Listen for beacon changes
     const subscription = DeviceEventEmitter.addListener(
-        'beaconsDidRange',
-        (data) => {
-          console.info('Searching for Beacons in this Region: ' +data.region.identifier);
-          for (let i = 0; i < data.beacons.length; i++) {
-            let statue_slug = null;
-            if ((statue_slug = AbstractBeacon.isBeaconKnown(data.beacons[i].uuid)) != null) {
-              if (AbstractBeacon.active_beacons.indexOf(statue_slug) < 0) {
-                AbstractBeacon.active_beacons.push(statue_slug);
-                console.log("NEW BEACONS INSERTED", statue_slug)
-                PushNotification.localNotification({
-                  title: "<Statuen>",
+      'beaconsDidRange',
+      (data) => {
+        console.info('Searching for Beacons in this Region: ' +data.region.identifier);
+        for (let i = 0; i < data.beacons.length; i++) {
+          let statue_slug = null;
+          if ((statue_slug = AbstractBeacon.isBeaconKnown(data.beacons[i].uuid, data.beacons[i].minor)) != null) {
+            if (AbstractBeacon.active_beacons.indexOf(statue_slug) < 0) {
+              AbstractBeacon.active_beacons.push(statue_slug);
+              console.log("NEW BEACONS INSERTED", statue_slug)
+              PushNotification.localNotification({
+                title: "<Statuen>",
                   message: "There is a statue nearby :)", // (required)
                   date: Date.now(),
                   category: 'OK',
                   userInfo: {slug:  statue_slug} //statue_slug
                 });
-              }
             }
           }
         }
-    );
+      }
+      );
   }
 }

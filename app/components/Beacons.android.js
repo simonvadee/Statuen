@@ -11,10 +11,11 @@ export default class AbstractBeacon {
 	static all_beacons = null;
 	static active_beacons = [];
 
-	static isBeaconKnown(beacon_uuid) {
+	static isBeaconKnown(beacon_uuid, minor) {
 		if (AbstractBeacon.all_beacons != null) {
 			for (let i = 0; i < AbstractBeacon.all_beacons.length; i++) {
-				if (AbstractBeacon.all_beacons[i].fields.uuid.toLowerCase() == beacon_uuid)
+				if (AbstractBeacon.all_beacons[i].fields.uuid.toLowerCase() == beacon_uuid
+					&& AbstractBeacon.all_beacons[i].fields.min_value == minor)
 					return AbstractBeacon.all_beacons[i].fields.slug_statue;
 			}
 		}
@@ -42,15 +43,13 @@ export default class AbstractBeacon {
 			'beaconsDidRange',
 			(data) => {
 				// if beacon detected and uuid of beacon belongs to the pre-fetched beacons, then send push notification 
-				// console.log(data.beacons);
 				console.log(data.beacons.length)
 				for (let i = 0; i < data.beacons.length; i++) {
 					let statue_slug = null;
-					if ((statue_slug = AbstractBeacon.isBeaconKnown(data.beacons[i].uuid)) != null) {
+					if ((statue_slug = AbstractBeacon.isBeaconKnown(data.beacons[i].uuid, data.beacons[i].minor)) != null) {
 						// console.log('beaconsDidRange data: ', data.beacons[i]);
 						if (AbstractBeacon.active_beacons.indexOf(statue_slug) < 0) {
 							AbstractBeacon.active_beacons.push(statue_slug);
-
 							console.log("NEW BEACONS INSERTED", statue_slug)
 
 							PushNotification.localNotification({

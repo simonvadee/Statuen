@@ -43,6 +43,12 @@ export default class ChatScreen extends Component {
   }
 
   componentDidUpdate() {
+    if (this.state.statue == undefined) {
+      this.setState({
+        statue: HomeScreen.statues[0].fields,
+        messages: this.initialMessages(HomeScreen.statues[0].fields.name)
+      });
+    }
     console.log("DID UPDATE");
   }
 

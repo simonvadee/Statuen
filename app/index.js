@@ -119,9 +119,7 @@ class HomeScreen extends React.Component {
 
   findStatue = (slug) => {
     for (let i = 0; i < this.state.statues.length; i++) {
-      console.debug(this.state.statues[i].fields.slug, slug)
       if (this.state.statues[i].fields.slug == slug) {
-        console.debug(this.state.statues[i])
         return this.state.statues[i].fields
       }
     }
