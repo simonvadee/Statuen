@@ -119,8 +119,11 @@ class HomeScreen extends React.Component {
 
   findStatue = (slug) => {
     for (let i = 0; i < this.state.statues.length; i++) {
-      if (this.state.statues[i].fields.slug == slug)
+      console.debug(this.state.statues[i].fields.slug, slug)
+      if (this.state.statues[i].fields.slug == slug) {
+        console.debug(this.state.statues[i])
         return this.state.statues[i].fields
+      }
     }
   };
 
@@ -128,6 +131,7 @@ class HomeScreen extends React.Component {
     console.log ('+++++++++++== Notification action received: ' + action, action.dataJSON);
     const info = JSON.parse(action.dataJSON);
     var statue_data = this.findStatue(info.slug);
+    console.debug('statue data:', statue_data)
     this._goTo(1, statue_data);
   };
 

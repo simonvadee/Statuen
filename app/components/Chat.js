@@ -47,7 +47,7 @@ export default class ChatScreen extends Component {
   }
 
   componentWillReceiveProps(props) {
-    // console.log('NEW PROPS', props, this.props);
+    console.log('NEW PROPS', props, this.props);
     statue = props.statue;
     if (statue != undefined && statue.slug != this.props.statue.slug) {
 
