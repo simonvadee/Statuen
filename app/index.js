@@ -29,11 +29,11 @@ import AboutScreen from './components/About/About'
 if (!String.prototype.format) {
   String.prototype.format = function() {
     var args = arguments;
-    return this.replace(/{(\d+)}/g, function(match, number) { 
+    return this.replace(/{(\d+)}/g, function(match, number) {
       return typeof args[number] != 'undefined'
-      ? args[number]
-      : match
-      ;
+          ? args[number]
+          : match
+          ;
     });
   };
 }
@@ -66,9 +66,9 @@ class HomeScreen extends React.Component {
   state = {
     index: 0,
     routes: [
-    { key: '1', title: '', icon: 'map-marker'},
-    { key: '2', title: '', icon: 'wechat'},
-    { key: '3', title: '', icon: 'question'},
+      { key: '1', title: '', icon: 'map-marker'},
+      { key: '2', title: '', icon: 'wechat'},
+      { key: '3', title: '', icon: 'question'},
     ],
   };
 
@@ -77,38 +77,42 @@ class HomeScreen extends React.Component {
     AbstractBeacon.init();
 
     fetch('http://api.talkingstatues.xyz/statues')
-    .then((response) => response.json())
-    .then((data) => {
-      this.setState({"statues": JSON.parse(data.latest_statue_list)});
-      console.log("statues :::::::: ", this.state.statues)
-    })
-    .catch((error) => console.log(error));
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({"statues": JSON.parse(data.latest_statue_list)});
+          console.log("statues :::::::: ", this.state.statues)
+        })
+        .catch((error) => console.log(error));
 
   }
 
   componentDidMount() {
     if (Platform.OS === 'android') {
       PushNotificationAndroid.registerNotificationActions(['OK']);
-      DeviceEventEmitter.addListener('notificationActionReceived', this.handleNotificationCallback);
     }
+    DeviceEventEmitter.addListener('notificationActionReceived', this.handleNotificationCallback);
 
     PushNotification.configure({
-        // (optional) Called when Token is generated (iOS and Android)
-        onRegister: function(token) {
-          console.log( 'TOKEN:', token );
-        },
-        // (required) Called when a remote or local notification is opened or received
-        onNotification: function(notification) {
-          console.log( 'NOTIFICATION:', notification);
-          if (Platform.OS === 'ios')
-            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.category, notification.slug)})
-          if (Platform.OS === 'android')
-            DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.tag, notification.slug)})
-        },
-        popInitialNotification: true,
-        requestPermissions: true,
-      });
+      // (optional) Called when Token is generated (iOS and Android)
+      onRegister: function(token) {
+        console.log( 'TOKEN:', token );
+      },
+      // (required) Called when a remote or local notification is opened or received
+      onNotification: function(notification) {
+        console.info("Is platform iOS: " , Platform.OS === 'ios')
+        console.log( 'NOTIFICATION:', notification);
+        if (Platform.OS === 'ios'){
+          DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.category, notification.data.slug)})
+
+        }
+        if (Platform.OS === 'android')
+          DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.tag, notification.data.slug)})
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
   }
+
 
   findStatue = (slug) => {
     for (let i = 0; i < this.state.statues.length; i++) {
@@ -117,70 +121,68 @@ class HomeScreen extends React.Component {
     }
   };
 
-    handleNotificationCallback = (action) => {
-      console.log ('+++++++++++== Notification action received: ' + action, action.dataJSON);
-      const info = JSON.parse(action.dataJSON);
-      if (info.action == 'OK') {
-        let statue_data = this.findStatue(info.slug);
-        this._goTo(1, statue_data);
-      }
-    };
+  handleNotificationCallback = (action) => {
+    console.log ('+++++++++++== Notification action received: ' + action, action.dataJSON);
+    const info = JSON.parse(action.dataJSON);
+    let statue_data = this.findStatue(info.slug);
+    this._goTo(1, statue_data);
+  };
 
-    _goTo = (index, statue) => {
-      this.setState({index: index, statue:statue})
-    };
+  _goTo = (index, statue) => {
+    this.setState({index: index, statue:statue})
+  };
 
-    _handleChangeTab = (index) => {
-      this.setState({ index });
-    };
+  _handleChangeTab = (index) => {
+    this.setState({ index });
+  };
 
-    _renderIcon = ({ route }: any) => {
-      return (
+  _renderIcon = ({ route }: any) => {
+    return (
         <Icon
-        name={route.icon}
-        size={24}
-        color='black'
+            name={route.icon}
+            size={24}
+            color='black'
         />
-        );
-    };
+    );
+  };
 
-    _renderHeader = (props) => {
-      return (
+  _renderHeader = (props) => {
+    return (
         <TabBar
-        {...props}
-        renderIcon={this._renderIcon}
-        style={styles.tabbar}
+            {...props}
+            renderIcon={this._renderIcon}
+            style={styles.tabbar}
         />);
-    };
+  };
 
-    _renderScene = ({ route }) => {
-      switch (route.key) {
-        case '1':
+  _renderScene = ({ route }) => {
+    switch (route.key) {
+      case '1':
         return ( <Map navigator={this._goTo} statues={this.state.statues} /> );
-        case '2':
+      case '2':
         return ( <ChatScreen statue={this.state.statue}/> );
-        case '3':
+      case '3':
         return ( <AboutScreen/> );
-        default:
+      default:
         return null;
-      }
-    };
-
-
-    render() {
-      return (
-        <TabViewAnimated
-        initialLayout={initialLayout}
-        style={styles.container}
-        lazy={true}
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderHeader={this._renderHeader}
-        onRequestChangeTab={this._handleChangeTab}
-        />
-        );
     }
-  }
+  };
 
-  AppRegistry.registerComponent('TalkingStatuesApp', () => HomeScreen);
+
+  render() {
+    return (
+        <TabViewAnimated
+            initialLayout={initialLayout}
+            style={styles.container}
+            lazy={true}
+            navigationState={this.state}
+            renderScene={this._renderScene}
+            renderHeader={this._renderHeader}
+            onRequestChangeTab={this._handleChangeTab}
+        />
+    );
+  }
+}
+
+AppRegistry.registerComponent('TalkingStatuesApp', () => HomeScreen);
 
