@@ -102,7 +102,7 @@ class HomeScreen extends React.Component {
         console.info("Is platform iOS: " , Platform.OS === 'ios')
         console.log( 'NOTIFICATION:', notification);
         if (Platform.OS === 'ios'){
-          DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.category, notification.data.slug)})
+          DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"slug":"{0}" }'.format(notification.data.slug)})
 
         }
         if (Platform.OS === 'android')
@@ -116,15 +116,19 @@ class HomeScreen extends React.Component {
 
   findStatue = (slug) => {
     for (let i = 0; i < this.state.statues.length; i++) {
-      if (this.state.statues[i].fields.slug == slug)
+      console.debug(this.state.statues[i].fields.slug, slug)
+      if (this.state.statues[i].fields.slug == slug) {
+        console.debug(this.state.statues[i])
         return this.state.statues[i].fields
+      }
     }
   };
 
   handleNotificationCallback = (action) => {
     console.log ('+++++++++++== Notification action received: ' + action, action.dataJSON);
     const info = JSON.parse(action.dataJSON);
-    let statue_data = this.findStatue(info.slug);
+    var statue_data = this.findStatue(info.slug);
+    console.debug('statue data:', statue_data)
     this._goTo(1, statue_data);
   };
 

@@ -27,8 +27,12 @@ styles = StyleSheet.create({
     fontSize:16,
     textAlign: 'center',
     marginBottom:6,
-
+    maxWidth:200,
   },
+  imgs: {
+    width:null,
+    height:200,
+  }
 });
 
 // Map markers etc
@@ -63,21 +67,21 @@ export default class Map extends Component {
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        if (pos.coords.latitude && pos.coords.longitude) {
-          this.setState({
-            region : {
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-              latitudeDelta: LATITUDE_DELTA_DEFAULT,
-              longitudeDelta: LONGITUDE_DELTA_DEFAULT,
-            }
-          });
-        }
-      },
-      (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-      );
+        (pos) => {
+          if (pos.coords.latitude && pos.coords.longitude) {
+            this.setState({
+              region : {
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+                latitudeDelta: LATITUDE_DELTA_DEFAULT,
+                longitudeDelta: LONGITUDE_DELTA_DEFAULT,
+              }
+            });
+          }
+        },
+        (error) => alert(JSON.stringify(error)),
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
     this.watchID = navigator.geolocation.watchPosition((pos) => {
       if (pos.coords.latitude && pos.coords.longitude) {
         this.setState({
@@ -113,87 +117,87 @@ export default class Map extends Component {
       // console.log( "http://api.talkingstatues.xyz/pic_folder/".concat(this.state.statues[i].fields.pictures))
     }
     return this.state.statues.map((marker, index) => (
-      <MapView.Marker
-      key={index}
-      coordinate={ marker.fields }
-      title={marker.fields.name}
-      description={marker.fields.description}
-      onPress={() => {
-        if (Platform.OS === 'ios') {
-          this.focus_marker(index)
-        }
-      }}
-      >
-      <MapView.Callout
-      tooltip={true}
-      onPress={() =>
+        <MapView.Marker
+            key={index}
+            coordinate={ marker.fields }
+            title={marker.fields.name}
+            description={marker.fields.description}
+            onPress={() => {
+              if (Platform.OS === 'ios') {
+                this.focus_marker(index)
+              }
+            }}
+        >
+          <MapView.Callout
+              tooltip={true}
+              onPress={() =>
               {this.props.navigator(1, marker.fields)} // send statue data
-            }>
+              }>
             <CustomCallout>
-            <View style={{}}>
-            <Text style={styles.header}>{marker.fields.name}</Text>
-            <Image
-            style={{resizeMode: 'contain', width:100, height:100}}
-            // source={require('../src/avatar.png')}
-            source={{uri: "http://api.talkingstatues.xyz/pic_folder/".concat(marker.fields.pictures)}}
-            />
-            </View>
+              <View style={{}}>
+                <Text style={styles.header}>{marker.fields.name}</Text>
+                <Image
+                    style={styles.imgs}
+                    // source={require('../src/avatar.png')}
+                    source={{uri: "http://api.talkingstatues.xyz/pic_folder/".concat(marker.fields.pictures)}}
+                />
+              </View>
             </CustomCallout>
-            </MapView.Callout>
-            </MapView.Marker>
-            ))
+          </MapView.Callout>
+        </MapView.Marker>
+    ))
   }
 
   render_map = (route, navigator) => {
     if (!this.state.markers_loaded) {
       return (
-        <MapView.Animated
-        ref='map'
-        region={this.state.region}
-        style={styles.map}
-        onRegionChange={(region) => {
-          this.setState({region})
-        }}
-        onRegionChangeComplete={() => {}}
-        showsUserLocation={true}
-        >
-        </MapView.Animated>
-        );
+          <MapView.Animated
+              ref='map'
+              region={this.state.region}
+              style={styles.map}
+              onRegionChange={(region) => {
+                this.setState({region})
+              }}
+              onRegionChangeComplete={() => {}}
+              showsUserLocation={true}
+          >
+          </MapView.Animated>
+      );
     } else {
       return (
-        <MapView.Animated
-        ref='map'
-        region={this.state.region}
-        style={styles.map}
-        onRegionChange={(region) => {
-          this.setState({region})
-        }}
-        onRegionChangeComplete={() => {}}
-        showsUserLocation={true}
-        >
-        {  this.display_markers() }
-        </MapView.Animated>
-        );
+          <MapView.Animated
+              ref='map'
+              region={this.state.region}
+              style={styles.map}
+              onRegionChange={(region) => {
+                this.setState({region})
+              }}
+              onRegionChangeComplete={() => {}}
+              showsUserLocation={true}
+          >
+            {  this.display_markers() }
+          </MapView.Animated>
+      );
     }
   }
 // Class is currently unused, semi prepared 
-render(){
-  return(
-    <Navigator
-    navigationBar={
-      <Navigator.NavigationBar
-      routeMapper={{
-        LeftButton: (route, navigator, index, navState) => {},
-        RightButton: (route, navigator, index, navState) =>
-        {},
-        Title: (route, navigator, index, navState) =>
-        {},
-      }}
-      style={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}}
-      />
-    }
-    renderScene={this.render_map}
-    />
+  render(){
+    return(
+        <Navigator
+            navigationBar={
+              <Navigator.NavigationBar
+                  routeMapper={{
+                    LeftButton: (route, navigator, index, navState) => {},
+                    RightButton: (route, navigator, index, navState) =>
+                    {},
+                    Title: (route, navigator, index, navState) =>
+                    {},
+                  }}
+                  style={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}}
+              />
+            }
+            renderScene={this.render_map}
+        />
     );
-}
+  }
 }
