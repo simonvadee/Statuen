@@ -110,7 +110,7 @@ export default class Map extends Component {
 
   display_markers() {
     for (let i = 0; i < this.state.statues.length; i++) {
-      console.log( "http://api.talkingstatues.xyz/pic_folder/".concat(this.state.statues[i].fields.pictures))
+      // console.log( "http://api.talkingstatues.xyz/pic_folder/".concat(this.state.statues[i].fields.pictures))
     }
     return this.state.statues.map((marker, index) => (
       <MapView.Marker
