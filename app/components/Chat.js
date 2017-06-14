@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 
 import { GiftedChat } from 'react-native-gifted-chat';
+import {HomeScreen} from '../index'
 
 export default class ChatScreen extends Component {
 

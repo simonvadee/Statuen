@@ -72,6 +72,8 @@ class HomeScreen extends React.Component {
     ],
   };
 
+  static statues = [];
+
   constructor(props) {
     super(props)
     AbstractBeacon.init();
@@ -80,6 +82,7 @@ class HomeScreen extends React.Component {
         .then((response) => response.json())
         .then((data) => {
           this.setState({"statues": JSON.parse(data.latest_statue_list)});
+          HomeScreen.statues = this.state.statues;
           console.log("statues :::::::: ", this.state.statues)
         })
         .catch((error) => console.log(error));
@@ -102,11 +105,11 @@ class HomeScreen extends React.Component {
         console.info("Is platform iOS: " , Platform.OS === 'ios')
         console.log( 'NOTIFICATION:', notification);
         if (Platform.OS === 'ios'){
-          DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.category, notification.data.slug)})
+          DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"slug":"{0}" }'.format(notification.data.slug)})
 
         }
         if (Platform.OS === 'android')
-          DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.tag, notification.data.slug)})
+          DeviceEventEmitter.emit("notificationActionReceived", {dataJSON: '{"action": "{0}", "slug":"{1}" }'.format(notification.tag, notification.slug)})
       },
       popInitialNotification: true,
       requestPermissions: true,
@@ -124,7 +127,7 @@ class HomeScreen extends React.Component {
   handleNotificationCallback = (action) => {
     console.log ('+++++++++++== Notification action received: ' + action, action.dataJSON);
     const info = JSON.parse(action.dataJSON);
-    let statue_data = this.findStatue(info.slug);
+    var statue_data = this.findStatue(info.slug);
     this._goTo(1, statue_data);
   };
 
