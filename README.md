@@ -1,6 +1,8 @@
 # TalkingStatuesApp
 Main smartphone application for THUAS EPS 2017
 
+MIRROR OF NesireDSK/TalkingStatuesApp
+
 ## Installation instruction
 
 ### Setup node js enviroment
