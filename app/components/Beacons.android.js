@@ -48,8 +48,8 @@ export default class AbstractBeacon {
 					let statue_slug = null;
 					if ((statue_slug = AbstractBeacon.isBeaconKnown(data.beacons[i].uuid)) != null) {
 						// console.log('beaconsDidRange data: ', data.beacons[i]);
-						if (AbstractBeacon.active_beacons.indexOf(data.beacons[i].uuid) < 0) {
-							AbstractBeacon.active_beacons.push(data.beacons[i].uuid);
+						if (AbstractBeacon.active_beacons.indexOf(statue_slug) < 0) {
+							AbstractBeacon.active_beacons.push(statue_slug);
 
 							console.log("NEW BEACONS INSERTED", statue_slug)
 
